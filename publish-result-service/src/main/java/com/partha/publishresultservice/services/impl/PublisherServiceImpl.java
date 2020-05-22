@@ -27,7 +27,7 @@ public class PublisherServiceImpl implements PublisherService{
 		FinalResult finalResult = new FinalResult();
 		
 		ResponseEntity<List<Student>> studentRecordResponse =
-		        restTemplate.exchange("http://localhost:8085/sql/student/get/"+regno+"/"+year,
+		        restTemplate.exchange("http://student-details-service/sql/student/get/"+regno+"/"+year,
 		                    HttpMethod.GET, null, new ParameterizedTypeReference<List<Student>>() {
 		            });
 		List<Student> studentRecords = studentRecordResponse.getBody();
@@ -38,7 +38,7 @@ public class PublisherServiceImpl implements PublisherService{
 		for(Student record : studentRecords)
 		{
 			ResultDetails resultDetails = 
-					(ResultDetails)restTemplate.getForObject("http://localhost:8083/mongo/result/getresult/"+record.getRollno(), ResultDetails.class);
+					(ResultDetails)restTemplate.getForObject("http://result-details-service/mongo/result/getresult/"+record.getRollno(), ResultDetails.class);
 			results.add(resultDetails);
 		}
 		finalResult.setAllResults(results);
@@ -51,7 +51,7 @@ public class PublisherServiceImpl implements PublisherService{
 FinalResult finalResult = new FinalResult();
 		
 		ResponseEntity<List<Student>> studentRecordResponse =
-		        restTemplate.exchange("http://movie-data-service-new/ratings/"+regno,
+		        restTemplate.exchange("http://student-details-service/sql/student/get/"+regno,
 		                    HttpMethod.GET, null, new ParameterizedTypeReference<List<Student>>() {
 		            });
 		List<Student> studentRecords = studentRecordResponse.getBody();
@@ -62,7 +62,7 @@ FinalResult finalResult = new FinalResult();
 		for(Student record : studentRecords)
 		{
 			ResultDetails resultDetails = 
-					(ResultDetails)restTemplate.getForObject("http://localhost:8083/mongo/result/getresult/"+record.getRollno(), ResultDetails.class);
+					(ResultDetails)restTemplate.getForObject("http://result-details-service/mongo/result/getresult/"+record.getRollno(), ResultDetails.class);
 			results.add(resultDetails);
 		}
 		finalResult.setAllResults(results);
