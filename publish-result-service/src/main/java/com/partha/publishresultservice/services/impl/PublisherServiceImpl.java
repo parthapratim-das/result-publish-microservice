@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class PublisherServiceImpl implements PublisherService{
 		FinalResult finalResult = new FinalResult();
 		
 		ResponseEntity<List<Student>> studentRecordResponse =
-		        restTemplate.exchange("http://localhost:8080/sql/student/get/"+regno+"/"+year,
+		        restTemplate.exchange("http://student-details-service/sql/student/get/"+regno+"/"+year,
 		                    HttpMethod.GET, null, new ParameterizedTypeReference<List<Student>>() {
 		            });
 		List<Student> studentRecords = studentRecordResponse.getBody();
@@ -45,7 +46,7 @@ public class PublisherServiceImpl implements PublisherService{
 		for(Student record : studentRecords)
 		{
 			ResultDetails resultDetails = 
-					(ResultDetails)restTemplate.getForObject("http://localhost:8083/mongo/result/getresult/"+record.getRollno(), ResultDetails.class);
+					(ResultDetails)restTemplate.getForObject("http://result-details-service/mongo/result/getresult/"+record.getRollno(), ResultDetails.class);
 			results.add(resultDetails);
 		}
 		finalResult.setAllResults(results);
